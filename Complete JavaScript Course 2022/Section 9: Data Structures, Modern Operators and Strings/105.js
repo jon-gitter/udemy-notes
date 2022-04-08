@@ -46,12 +46,16 @@ const restaurant = {
 
   orderPasta: function (ing1, ing2, ing3) {
     console.log(
-      `Here is your delicious pasta with ${ing1}, ${ing2} and ${ing3}`);
+      `Here is your delicious pasta with ${ing1}, ${ing2} and ${ing3}`
     );
   },
 };
 
-const ingredients = [prompt('Let\'s make pasta! Ingredient 1?'), prompt('Let\'s make pasta! Ingredient 2?'), prompt('Let\'s make pasta! Ingredient 3?') ];
+const ingredients = [
+  prompt("Let's make pasta! Ingredient 1?"),
+  prompt("Let's make pasta! Ingredient 2?"),
+  prompt("Let's make pasta! Ingredient 3?"),
+];
 console.log(ingredients);
 
 // old way
@@ -60,14 +64,13 @@ restaurant.orderPasta(ingredients[0], ingredients[1], ingredients[2]);
 restaurant.orderPasta(...ingredients);
 
 // objects
-const newRestaurant = {foundedIn: 1998, ...restaurant, founder: 'Guiseppe'}
+const newRestaurant = { foundedIn: 1998, ...restaurant, founder: 'Guiseppe' };
 console.log(newRestaurant);
 
-const restaurantCopy = {...restaurant};
+const restaurantCopy = { ...restaurant };
 restaurantCopy.name = 'Ristorante Roma';
 console.log(restaurantCopy.name);
 console.log(restaurant.name);
-
 
 const newMenu = [...restaurant.mainMenu, 'Gnocci'];
 console.log(newMenu);

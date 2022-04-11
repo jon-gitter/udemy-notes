@@ -6,7 +6,7 @@ const rest1 = {
   numGuests: 0,
 };
 
-const rest1 = {
+const rest2 = {
   name: 'La Piazza',
   owner: 'Giovanni Rossi',
 };

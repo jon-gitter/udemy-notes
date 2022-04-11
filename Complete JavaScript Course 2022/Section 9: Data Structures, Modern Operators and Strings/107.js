@@ -1,5 +1,13 @@
 'use strict';
 
+// use ANY data type, return ANY data type, short-circuiting (short circuiting evaluation)
+console.log(3 || 'Jonas');
+console.log('' || 'Jonas');
+console.log(true || 0);
+console.log(undefined || null);
+
+console.log(undefined || 0 || '' || 'Hello' || 23 || null);
+
 const restaurant = {
   name: 'Classico Italiano',
   location: 'Via Angelo Tavanti 23, Firenze, Italy',
@@ -48,38 +56,22 @@ const restaurant = {
   },
 };
 
-restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach');
-restaurant.orderPizza('mushrooms');
+restaurant.numGuests = 23;
+const guests1 = restaurant.numGuests ? restaurant.numGuests : 10;
+console.log(guests1);
 
-// 1) destructuring
+const guests2 = restaurant.numGuests || 10;
+console.log(guests2);
 
-// spread operator, b/c on right side of assignment operator (=)
-const arr = [1, 2, ...[3, 4]];
+console.log('--- AND ---');
+console.log(0 && 'Jonas');
+console.log(7 && 'Jonas');
 
-// rest operator, b/c it's on the left side of the assignment operator (=)
-const [a, b, ...others] = [1, 2, 3, 4, 5];
-console.log(a, b, others);
+console.log('Hello' && 23 && null && 'Jonas');
 
-const [pizza, , risotto, ...otherFood] = [
-  ...restaurant.mainMenu,
-  ...restaurant.starterMenu,
-];
-console.log(pizza, risotto, otherFood);
+// Practical example
+if (restaurant.orderPizza) {
+  restaurant.orderPizza('mushrooms', 'spinach');
+}
 
-// objects
-const { sat, ...weekDays } = restaurant.openingHours;
-console.log(weekDays);
-
-// 2) functions
-const add = function (...numbers) {
-  let sum = 0;
-  for (let i = 0; i < numbers.length; i++) sum += numbers[i];
-  console.log(sum);
-};
-// we want any arbitrary amount of arguments for this function
-add(2, 3);
-add(5, 3, 7, 2);
-add(8, 2, 5, 3, 2, 1, 4);
-
-const x = [23, 5, 7];
-add(...x);
+restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach');

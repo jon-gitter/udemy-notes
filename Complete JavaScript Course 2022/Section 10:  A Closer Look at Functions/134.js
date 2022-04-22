@@ -52,3 +52,20 @@ console.log(swiss);
 
 // same output but using the .call() method, utilizing spread operator to get all data from an array
 book.call(swiss, ...flightData);
+
+// -------------------------- .bind() method ----------------------------- //
+
+//////// .bind() method, we need to use the book function for eurowings ALL the time ////////////
+book.call(eurowings, 23, 'Sarah Williams') // replicated below
+
+const bookEW = book.bind(eurowings)  // will not call the book function, instead it will return a new function where the '.this' keyword will be set to eurowings
+bookEW(23, 'Steven Williams') // with this function call the '.this' keyword is set in stone from the previous line of code (line 59), parameters only need to be the flight number and name, unlike .call() where we have to specify the object
+
+// can now do the same with all of the other airlines, helpful if needed to do a function call with that method multiple times
+const bookLH = book.bind(lufthansa);
+const bookLX = book.bind(swiss);
+
+// can also bind arguments by putting a specific parameter inside of bind
+const bookEW23 = book.bind(eurowings, 23) // since the object is specified (eurowings) and the flight number (23) we need to call the passenger name since it will be the only argument not bound from this .bind() method
+bookEW23('Jonas Schmedtmann');
+bookEW23('Martha Cooper');

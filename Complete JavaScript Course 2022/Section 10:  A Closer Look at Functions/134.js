@@ -67,5 +67,37 @@ const bookLX = book.bind(swiss);
 
 // can also bind arguments by putting a specific parameter inside of bind
 const bookEW23 = book.bind(eurowings, 23) // since the object is specified (eurowings) and the flight number (23) we need to call the passenger name since it will be the only argument not bound from this .bind() method
-bookEW23('Jonas Schmedtmann');
-bookEW23('Martha Cooper');
+bookEW23('Jonas Schmedtmann'); // allows us to call the function with the name being the only unbound value
+bookEW23('Martha Cooper'); // allows us to call the function with the name being the only unbound value
+
+// using .bind() with event listeners
+lufthansa.planes = 300;
+lufthansa.buyPlane = function(){
+  console.log(this);
+
+  this.planes++
+  console.log(this.planes);
+};
+document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane) // won't work, the '.this' keyword will give us NaN, b/c the '.this' keyword on line 76 is the button element from the eventListener.  This is because in event handler function the '.this' keyword always points to the element on which that handler is attached to.  The lufthansa.buyPlane is the handler function attached to the document.querySelector('.buy') element/button. Therefore inside of the event handler function (lufthansa.buyPlane) the '.this' keyword will point to the button element NOT the object.  Proof that the '.this' keyword is set dynamically.
+
+// we need to manually define the '.this' keyword inside the function
+document.querySelector('.buy').addEventListener('click', lufthansa.buyPlane.bind(lufthansa));  // we use .bind() here and not .call() because we need to pass in a function NOT to call a function in order to utilize the '.this' keyword. The .call() method only CALLs a function the .bind() method returns a NEW function 
+
+// additional example of partial application using .bind() method
+const addTax = (rate,value) => value + value * rate;
+console.log(addTax(.10, 200));
+
+const addVAT = addTax.bind(null, .23); // utilize null when we don't have a '.this' in the function we're calling. Equivalent to addVAT = value => value + value * 0.23;
+
+console.log(addVAT(100));
+console.log(addVAT(23));
+
+// rewrite making one function returning another function from lines 87-93
+const addTaxRate = function (rate){
+  return function (value) {
+    return value + value * rate;
+  };
+};
+const addVAT2 = addTaxRate(0.23);
+console.log(addVAT2(100));
+console.log(addVAT2(23));

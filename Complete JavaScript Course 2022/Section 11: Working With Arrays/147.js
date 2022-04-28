@@ -24,7 +24,7 @@ const displayMovements = function (movements) {
         <div class="movements__value">${mov}</div>
     </div>`;
 
-    containerMovements.insertAdjacentHTML('afterbegin', html)''
+    containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
 displayMovements(account1.movements);

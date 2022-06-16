@@ -19,7 +19,7 @@ jack.calcAge();
 
 Person.prototype.species = 'Homo Sapiens';
 
-console.log(jonas.__proto__); // contains the calcAge prototype and the speicies: property
+console.log(jonas.__proto__); // contains the calcAge prototype and the species: property
 console.log(jonas.__proto__.__proto__); // moving up the prototype chain, output is the prototype property of Object, Object.prototype
 console.log(jonas.__proto__.__proto__.__proto__); // output is null, b/c object.prototype is the top of the prototype chain
 

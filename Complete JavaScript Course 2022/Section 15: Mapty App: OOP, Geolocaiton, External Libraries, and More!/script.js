@@ -12,7 +12,7 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
 ///////////////////////////////////////////////
-//////////// Displaying a Map Using Leaflet library ////////////
+//////////// Rendering Workout Input Form ////////////
 ///////////////////////////////////////////////
 
 if (navigator.geolocation)
@@ -22,18 +22,35 @@ if (navigator.geolocation)
       const { longitude } = position.coords;
       console.log(`https://www.google.com/maps/@{latitude},{longitude}`);
 
-      // pasted code from leaflet.com with adaptions to our code
-      const map = L.map('map').setView([51.505, -0.09], 13);
+      const coords = [latitude, longitude];
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      const map = L.map('map').setView(coords, 13);
+      console.log(map);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
 
-      L.marker([51.5, -0.09])
-        .addTo(map)
-        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
+      map.on('click', function (mapEvent) {
+        console.log(mapEvent);
+
+        const { lat, lng } = mapEvent.latlng;
+
+        L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(
+            L.popup({
+              maxWidth: 250,
+              minWidth: 100,
+              autoClose: false,
+              closeOnClick: false,
+              className: 'running-popup',
+            })
+          )
+          .setPopupContent('Workout')
+          .openPopup();
+      });
     },
     function () {
       alert('Could not get your position');

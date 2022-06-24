@@ -4,7 +4,7 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
 ////////////////////////////////////////////
-////// Welcome to Callback Hell //////
+////// Promises and Fetch API //////
 ////////////////////////////////////////////
 
 // const getCountryData = function (country) {
@@ -81,8 +81,6 @@ const getCountryAndNeighbour = function (country) {
   request.send();
 
   request.addEventListener('load', function () {
-    // console.log(this.responseText);
-
     const [data] = JSON.parse(this.responseText);
     console.log(data);
 
@@ -96,7 +94,7 @@ const getCountryAndNeighbour = function (country) {
 
     // AJAX call country 2
     const request2 = new XMLHttpRequest();
-    request2.open('GET', `https://restcountries.com/v3.1/alpha/${neighbor}`); // we change url to alpha to allow for country codes instead of name b/c the name from the API doesn't match with the url country name we need
+    request2.open('GET', `https://restcountries.com/v3.1/alpha/${neighbor}`);
     request2.send();
 
     request2.addEventListener('load', function () {
@@ -112,8 +110,6 @@ const getCountryAndNeighbour = function (country) {
 // getCountryAndNeighbour('portugal');
 getCountryAndNeighbour('usa');
 
-// Callback Hell: when we have a lot of nested callbacks in order to execute asynchronous tasks in sequence. This happens for all asynchronous tasks not which are handled by callbacks not just AJAX calls. Can be seen via a triangular shape (see below). Promises help us escape callback hell.
-// Example:
 setTimeout(() => {
   console.log('1 second passed');
   setTimeout(() => {

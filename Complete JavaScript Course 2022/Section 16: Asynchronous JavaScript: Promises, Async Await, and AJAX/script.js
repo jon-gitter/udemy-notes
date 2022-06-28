@@ -4,44 +4,9 @@ const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
 ////////////////////////////////////////////
-////// Handling Rejected Promises //////
+////// Throwing Errors Manually //////
 ////////////////////////////////////////////
 
-// we will simulate when the user loses internet connection (example of a rejected promise)
-// two ways of handling rejections.  1) pass a second callback function into the then() method. For the first callback method (line16) is going to be called for a fulfilled promise, the second callback we pass will be called when the promise was rejected (line18). Handling the error is also called catching the error
-
-const getCountryData = function (country) {
-  // country 1
-  fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then(
-      (response) => response.json(),
-      (err) => alert(err) // the error will now display as an alert and not down in the console
-    )
-    .then((data) => {
-      renderCountry(data[0]);
-      const neighbor = data[0].borders[0];
-
-      if (!neighbor) return;
-
-      // country 2
-      return fetch(`https://restcountries.com/v3.1/alpha/${neighbor}`);
-    })
-    .then(
-      (response) => response.json(),
-      (err) => alert(err)
-    )
-    .then((data) => renderCountry(data, 'neighbor'));
-};
-
-// we want to only call the below function when a user clicks on a button
-
-btn.addEventListener('click', function () {
-  getCountryData('portugal');
-});
-
-/////////// Refactored to Handle errors globally ///////////
-
-// creating a function that will render an error
 const renderError = function (msg) {
   countriesContainer.insertAdjacentText('beforeend', msg);
   // countriesContainer.style.opacity = 1;
@@ -71,36 +36,43 @@ const renderCountry = function (data, className = '') {
   // countriesContainer.style.opacity = 1;
 };
 
-const getCountryDataRefactor = function (country) {
+// getJSON will return a promise
+const getJSON = function (url, errorMsg = 'Something went wrong') {
+  return fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
+
+    return response.json();
+  });
+};
+
+const getCountryData = function (country) {
   // country 1
-  fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then((response) => response.json())
+  getJSON(`https://restcountries.com/v3.1/name/${country}`, 'Country not found')
     .then((data) => {
       renderCountry(data[0]);
       const neighbor = data[0].borders[0];
-
-      if (!neighbor) return;
+      
+      if (!neighbor) throw new Error('No neighbor found!');
 
       // country 2
-      return fetch(`https://restcountries.com/v3.1/alpha/${neighbor}`);
-    })
-    .then((response) => response.json())
-    .then((data) => renderCountry(data, 'neighbor'))
+      getJSON(
+        `https://restcountries.com/v3.1/alpha/${neighbor}`,
+        'Country not found').then((data) => renderCountry(data, 'neighbor'))
     .catch((err) => {
-      console.error(`${err}!!!!!!`); // Will display the error to the console. we can handle all the errors no matter where they appear in the chain at the end of the chain by adding a catch method.
+      console.error(`${err}!!!!!!`);
       renderError(`Something went wrong!!!!! ${err.message}. Try again!`);
     })
     .finally(() => {
       countriesContainer.style.opacity = 1;
-    }); // finally() is used no matter what happens at the end of a promise. Good example is to hide a rotating spinner you see everywhere in web apps when you load data
-};
+    });
+  };
+
 
 btn.addEventListener('click', function () {
-  getCountryDataRefactor('portugal');
+  getCountryData('portugal');
 });
 
-// displaying an error for a country that doesn't exist
-getCountryData('dsafdas');
+getCountryData('australia');
 
 ///////////////////////////////////////////////////////////////
 
